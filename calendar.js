@@ -3,18 +3,15 @@ const readline = require('readline');
 const storage = require('node-persist');
 const {google} = require('googleapis');
 
-const CALENDAR_ID = 'netsplit.com_dil3ieljjf7jsp3qvaqk0ggda0@group.calendar.google.com';
-
 const SCOPES = ['https://www.googleapis.com/auth/calendar.events'];
 const CREDENTIALS_PATH = 'credentials.json';
 const TOKEN_PATH = 'token.json';
 
 class Calendar {
 
-  constructor(calendarId) {
-    this.calendarId = calendarId;
-
-    this.refreshInterval = 5000;
+  constructor(log, config) {
+    this.log = log;
+    this.config = config;
 
     this.scopes = SCOPES;
     this.credentialsPath = CREDENTIALS_PATH;
@@ -35,7 +32,7 @@ class Calendar {
         access_type: 'offline',
         scope: this.scopes,
       });
-      console.log('Authorize this app by visiting this url:', authUrl);
+      loconsole.g('Authorize this app by visiting this url:', authUrl);
 
       const rl = readline.createInterface({
         input: process.stdin,
@@ -65,14 +62,13 @@ class Calendar {
     var pageToken;
     do {
       const {data} = await this.calendar.events.list({
-        calendarId: this.calendarId,
+        calendarId: this.config.calendarId,
         singleEvents: true,
         syncToken: this.syncToken,
         pageToken: pageToken
       });
 
-      var event;
-      for (event of data.items) {
+      for (var event of data.items) {
         if (event.status == "cancelled") {
           await storage.removeItem('event/' + event.id);
         } else {
@@ -82,7 +78,7 @@ class Calendar {
         try {
           callback(event);
         } catch(err) {
-          console.log(err);
+          this.log.error(err);
         }
       }
 
@@ -101,8 +97,8 @@ class Calendar {
     await this.updateEvents(callback);
     this.syncTimeout = setInterval(() => {
       this.updateEvents(callback)
-        .catch(console.log)
-    }, this.refreshInterval);
+        .catch(this.log.error)
+    }, this.config.refreshInterval);
   }
 
   stopSync() {

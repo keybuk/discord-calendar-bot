@@ -8,8 +8,12 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
+    "bunyan": "^1.8.12",
+    "dateformat": "^3.0.3",
     "discord.js": "^11.4.2",
     "googleapis": "^36.0.0",
+    "html-to-text": "^4.0.0",
+    "moment": "^2.23.0",
     "mz": "^2.7.0",
     "node-persist": "^3.0.2"
   },

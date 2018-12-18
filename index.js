@@ -1,19 +1,24 @@
 const fs = require('mz/fs');
 const storage = require('node-persist');
+const bunyan = require('bunyan');
 
 const {Calendar} = require('./calendar.js');
 const {Bot} = require('./bot.js');
 
-const CALENDAR_ID = 'netsplit.com_dil3ieljjf7jsp3qvaqk0ggda0@group.calendar.google.com';
-
 async function main() {
+  const log = bunyan.createLogger({
+    name: 'Fluffer',
+    stream: process.stdout,
+    level: 'debug'
+  });
+
   await storage.init();
   const config = JSON.parse(await fs.readFile('config.json'));
 
-  const calendar = new Calendar(config.calendarId);
+  const calendar = new Calendar(log, config);
   await calendar.authenticate();
 
-  const bot = new Bot(config.discordToken, config.discordChannel);
+  const bot = new Bot(log, config, calendar);
   await bot.login();
 
   await calendar.syncEvents((event) => {
