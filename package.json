@@ -1,0 +1,17 @@
+{
+  "name": "discord-calendar-bot",
+  "version": "0.0.0",
+  "description": "Discord Calendar Bot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keybuk/discord-calendar-bot.git"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "googleapis": "^36.0.0",
+    "mz": "^2.7.0",
+    "node-persist": "^3.0.2"
+  },
+  "main": "index.js"
+}
