@@ -97,12 +97,63 @@ class Calendar {
     await this.updateEvents(callback);
     this.syncTimeout = setInterval(() => {
       this.updateEvents(callback)
-        .catch(this.log.error)
+        .catch(err => this.log.error(err));
     }, this.config.refreshInterval);
   }
 
   stopSync() {
     clearInterval(this.syncTimeout);
+  }
+
+  async setResponses(event, responses) {
+    if (!event.id) {
+      const eventId = event;
+      event = await storage.getItem('event/' + eventId);
+      if (!event) {
+        this.log.warn(`Couldn't turn event ${eventId} into an event`);
+        return;
+      }
+
+    }
+
+    var done = {};
+    var changed = false;
+    if (event.attendees) {
+      for (const attendee of event.attendees) {
+        const response = responses[attendee.email];
+        if (response) {
+          if (attendee.responseStatus != response) {
+            attendee.responseStatus = response;
+            changed = true;
+          }
+          done[attendee.email] = 1; 
+        }
+      }
+    } else {
+      event.attendees = [];
+    }
+
+    for (const email in responses) {
+      if (done[email])
+        continue;
+
+      event.attendees.push({
+        email: email,
+        responseStatus: responses[email]
+      });
+      changed = true;
+    }
+
+    this.log.debug(event.attendees);
+    if (!changed)
+      return;
+
+    await this.calendar.events.update({
+      calendarId: this.config.calendarId,
+      eventId: event.id,
+      sendUpdates: 'all',
+      requestBody: event
+    });
   }
 
 }

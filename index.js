@@ -23,13 +23,10 @@ async function main() {
 
   await calendar.syncEvents((event) => {
     bot.announceEvent(event)
-      .catch(console.log);
-
-    if (event.start) {
-      const start = event.start.dateTime || event.start.date;
-      console.log(`${start} - ${event.summary}`);
-    }
+        .catch(err => log.error(err, "Error during announceEvent"));
   });
+
+  log.debug("Running");
 }
 
 main()
