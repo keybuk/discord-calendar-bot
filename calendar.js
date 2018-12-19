@@ -32,7 +32,7 @@ class Calendar {
         access_type: 'offline',
         scope: this.scopes,
       });
-      loconsole.g('Authorize this app by visiting this url:', authUrl);
+      console.log('Authorize this app by visiting this url:', authUrl);
 
       const rl = readline.createInterface({
         input: process.stdin,
