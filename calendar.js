@@ -69,7 +69,7 @@ class Calendar {
       });
 
       for (var event of data.items) {
-        if (event.status == "cancelled") {
+        if (event.status === 'cancelled') {
           await storage.removeItem('event/' + event.id);
         } else {
           await storage.setItem('event/' + event.id, event);
