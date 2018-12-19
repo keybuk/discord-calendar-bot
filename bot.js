@@ -51,6 +51,11 @@ class Bot {
         this.rsvpCommand(command, args, message)
           .catch(err => this.log.error(err, "Error caught during message"));
       }
+
+      if (command === "unrsvp") {
+        this.unrsvpCommand(command, args, message)
+          .catch(err => this.log.error(err, "Error caught during message"));
+      }
     });
 
     this.client.on('messageReactionAdd', (reaction, user) => {
@@ -312,10 +317,10 @@ class Bot {
         if (!userId)
           continue;
 
-        var going;
-        if (attendee.responseStatus == "accepted") {
+        var going = undefined;
+        if (attendee.responseStatus === "accepted") {
           going = true;
-        } else if (attendee.responseStatus == "declined") {
+        } else if (attendee.responseStatus === "declined") {
           going = false;
         }
 
@@ -390,6 +395,20 @@ class Bot {
     const rsvp = await this.getRsvp(eventId);
     const eventTitle = rsvp.title || `${eventId}`;
     return message.reply(`Okay, I've marked ${youStr} as going to ${eventTitle}`);
+  }
+
+  async unrsvpCommand(command, args, message) {
+    const eventId = args.shift();
+
+    const mentioned = message.mentions.users.first();
+    const who = mentioned || message.author;
+    const youStr = mentioned ? `${mentioned}` : 'you';
+
+    await this.rsvp(eventId, who.id, undefined);
+
+    const rsvp = await this.getRsvp(eventId);
+    const eventTitle = rsvp.title || `${eventId}`;
+    return message.reply(`Okay, I've marked ${youStr} as not having responded to ${eventTitle}`);
   }
 
 }
