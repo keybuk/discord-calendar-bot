@@ -46,6 +46,11 @@ class Bot {
         this.googleCommand(command, args, message)
           .catch(err => this.log.error(err, "Error caught during message"));
       }
+
+      if (command === "rsvp") {
+        this.rsvpCommand(command, args, message)
+          .catch(err => this.log.error(err, "Error caught during message"));
+      }
     });
 
     this.client.on('messageReactionAdd', (reaction, user) => {
@@ -340,32 +345,51 @@ class Bot {
     if (!accounts)
       accounts = {};
 
+    const mentioned = message.mentions.users.first();
+    const who = mentioned || message.author;
+    const youStr = mentioned ? `${mentioned}` : 'you';
+    const youreStr = mentioned ? `${mentioned} isn't` : 'You\'re';
+
     var currentEmail;
     for (const email in accounts) {
-      if (accounts[email] === message.author.id)
+      if (accounts[email] === who.id)
         currentEmail = email;
     }
 
-    let email = args.shift();
-    if (!email) {
+    const email = args.shift();
+    if (!email || email === '?') {
       if (currentEmail) {
-        return message.reply(`I'm inviting you to events on \`${currentEmail}\`. Provide a new address or \`off\` to change that.`);
+        return message.reply(`I'm inviting ${youStr} to events on \`${currentEmail}\`. Provide a new address or \`off\` to change that.`);
       } else {
-        return message.reply("You're not getting calendar invites to events. Provide your Google account e-mail address or `off`");
+        return message.reply(`${youreStr} not getting calendar invites to events. Provide a Google account e-mail address or \`off\``);
       }
     } else if (email === 'off') {
       if (currentEmail) {
         delete accounts[currentEmail];
         await storage.setItem('googleAccounts', accounts);
-        return message.reply("Okay, I won't invite you on Google Calendar anymore.");
+        return message.reply(`Okay, I won't invite ${youStr} on Google Calendar anymore.`);
       } else {
-        return message.reply("I wasn't inviting you to events on Google Calendar anyway!");
+        return message.reply(`I wasn't inviting ${youStr} to events on Google Calendar anyway!`);
       }
     } else {
-      accounts[email] = message.author.id;
+      accounts[email] = who.id;
       await storage.setItem('googleAccounts', accounts);
-      return message.reply("Okay! I'll invite you to events on Google Calendar from now on.");
+      return message.reply(`Okay! I'll invite ${youStr} to events on Google Calendar using \`${email}\` from now on.`);
     }
+  }
+
+  async rsvpCommand(command, args, message) {
+    const eventId = args.shift();
+
+    const mentioned = message.mentions.users.first();
+    const who = mentioned || message.author;
+    const youStr = mentioned ? `${mentioned}` : 'you';
+
+    await this.rsvp(eventId, who.id, true);
+
+    const rsvp = await this.getRsvp(eventId);
+    const eventTitle = rsvp.title || `${eventId}`;
+    return message.reply(`Okay, I've marked ${youStr} as going to ${eventTitle}`);
   }
 
 }
