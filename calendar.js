@@ -78,7 +78,7 @@ class Calendar {
         try {
           callback(event);
         } catch(err) {
-          this.log.error(err);
+          this.log.error(err, "Error caught during event callback");
         }
       }
 
