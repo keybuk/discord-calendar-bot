@@ -17,5 +17,8 @@
     "mz": "^2.7.0",
     "node-persist": "^3.0.2"
   },
-  "main": "index.js"
+  "main": "main.js",
+  "bin": {
+    "fluffer": "bin/fluffer"
+  }
 }

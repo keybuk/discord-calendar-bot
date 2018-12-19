@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'fluffer';
+
+// Find the lib
+var path = require('path');
+var fs = require('fs');
+var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../');
+
+// Change directory
+var path = require('os');
+var workdir = path.join(os.homedir(), ".fluffer");
+os.chdir(workdir);
+
+// Run HomeBridge
+require(lib + '/main')()
+	.catch(console.log);

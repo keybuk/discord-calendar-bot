@@ -5,7 +5,7 @@ const bunyan = require('bunyan');
 const {Calendar} = require('./calendar.js');
 const {Bot} = require('./bot.js');
 
-async function main() {
+module.exports = async function() {
   const log = bunyan.createLogger({
     name: 'Fluffer',
     stream: process.stdout,
@@ -28,6 +28,3 @@ async function main() {
 
   log.debug("Running");
 }
-
-main()
-  .catch(console.log);
