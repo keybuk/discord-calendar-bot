@@ -10,9 +10,9 @@ var fs = require('fs');
 var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 
 // Change directory
-var path = require('os');
+var os = require('os');
 var workdir = path.join(os.homedir(), ".fluffer");
-os.chdir(workdir);
+process.chdir(workdir);
 
 // Run HomeBridge
 require(lib + '/main')()

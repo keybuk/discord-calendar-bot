@@ -8,11 +8,21 @@ const {Bot} = require('./bot.js');
 module.exports = async function() {
   const log = bunyan.createLogger({
     name: 'Fluffer',
-    stream: process.stdout,
-    level: 'debug'
+    streams: [
+      {
+        level: 'debug',
+        stream: process.stdout
+      },
+      {
+        level: 'debug',
+        path: 'fluffer.log'
+      }
+    ]
   });
 
-  await storage.init();
+  await storage.init({
+    dir: 'persist'
+  });
   const config = JSON.parse(await fs.readFile('config.json'));
 
   const calendar = new Calendar(log, config);
