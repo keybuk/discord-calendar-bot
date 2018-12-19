@@ -140,6 +140,7 @@ class Bot {
         }
 
         rsvp.color = role.color;
+        rsvp.hide = false;
       } else {
         this.log.warn("No such role: %s". invite);
       }
