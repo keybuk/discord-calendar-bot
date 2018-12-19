@@ -32,14 +32,14 @@ class Calendar {
         access_type: 'offline',
         scope: this.scopes,
       });
-      console.log('Authorize this app by visiting this url:', authUrl);
+      console.log("Authorize this app by visiting this url:", authUrl);
 
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
       const code = await new Promise((resolve, reject) => {
-        rl.question('Enter the code from that page here: ', (code) => {
+        rl.question("Enter the code from that page here: ", (code) => {
           rl.close();
           resolve(code);
         });
