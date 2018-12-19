@@ -106,6 +106,7 @@ class Bot {
         || (rsvp.start.diff(now, 'days') > this.config.limit);
 
     rsvp.title = event.summary;
+    rsvp.location = event.location;
 
     // Parse the description each time looking for keywords.
     if (event.description) {
@@ -237,6 +238,8 @@ class Bot {
       content.setColor(rsvp.color);
 
     content.addField('When', this.eventTime(rsvp.start, rsvp.end));
+    if (rsvp.location)
+      content.addField('Where', rsvp.location);
     content.addField('Going', `${this.yesEmoji} ${yes.join(' ')}`);
     content.addField('Not Going', `${this.noEmoji} ${no.join(' ')}`);
     content.addField('No Response', `${this.noResponseEmoji} ${no_response.join(' ')}`);
