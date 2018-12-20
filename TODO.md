@@ -6,5 +6,3 @@
 
  * Calendar.setResponses cleanup
  * Bot.syncInvites cleanup
-
- * Allow a secret 😾 emoji to mark as unreplied
