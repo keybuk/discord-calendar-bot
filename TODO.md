@@ -4,8 +4,6 @@
    * bot.js should be just "Discord interface"
    * rsvp.invite needs guild.roles
 
- * Move most .js into lib/
-
  * Calendar.setResponses cleanup
  * Bot.syncInvites cleanup
 

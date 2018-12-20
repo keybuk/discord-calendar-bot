@@ -7,7 +7,7 @@ process.title = 'fluffer';
 // Find the lib
 var path = require('path');
 var fs = require('fs');
-var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../');
+var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
 
 // Change directory
 var os = require('os');
