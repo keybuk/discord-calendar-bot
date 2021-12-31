@@ -9,7 +9,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "bunyan": "^1.8.15",
-    "discord.js": "^11.4.2",
+    "discord.js": "^12.5.3",
     "googleapis": "^92.0.0",
     "html-to-text": "^8.1.0",
     "moment": "^2.29.1",
