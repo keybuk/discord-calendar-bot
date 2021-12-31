@@ -9,7 +9,6 @@
   "license": "UNLICENSED",
   "dependencies": {
     "bunyan": "^1.8.15",
-    "dateformat": "^3.0.3",
     "discord.js": "^11.4.2",
     "googleapis": "^92.0.0",
     "html-to-text": "^8.1.0",
