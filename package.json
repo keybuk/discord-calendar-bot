@@ -8,7 +8,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "bunyan": "^1.8.12",
+    "bunyan": "^1.8.15",
     "dateformat": "^3.0.3",
     "discord.js": "^11.4.2",
     "googleapis": "^36.0.0",
