@@ -2,7 +2,7 @@
 
 'use strict';
 
-process.title = 'fluffer';
+process.title = 'discord-calendar-bot';
 
 // Find the lib
 const path = require('path');
